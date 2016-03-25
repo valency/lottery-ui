@@ -1,9 +1,5 @@
-* {
-    font-family: "Microsoft YaHei UI Light", 'Microsoft YaHei', sans-serif;
-}
-
 body {
-    /*letter-spacing: 0.1em;*/
+    overflow-x: hidden;
 }
 
 a, a:link, a:active, a:hover, a:visited, a:before, a:after {
@@ -12,4 +8,15 @@ a, a:link, a:active, a:hover, a:visited, a:before, a:after {
 
 .bold {
     font-weight: bold;
+}
+
+.navbar-brand {
+    font-family: "French Script MT", sans-serif;
+    font-size: 2em;
+    font-weight: bold !important;
+    color: green !important;
+}
+
+th img {
+    height: 1em;
 }
