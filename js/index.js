@@ -124,18 +124,18 @@ function detail(id_500, id_hkjc, id_macau) {
     html += "<span class='label label-" + (max_h == DATA_500[id_500]["odds"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["home"] + "</span> ";
     html += "<span class='label label-" + (max_d == DATA_500[id_500]["odds"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["draw"] + "</span> ";
     html += "<span class='label label-" + (max_a == DATA_500[id_500]["odds"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["away"] + "</span>";
-    html += "</span></p><hr/>";
+    html += "</span></p>";
     if (id_hkjc != -1) {
-        html += "<p>";
+        html += "<hr/><p>";
         html += "<img src='img/logo-hkjc.gif' style='height:1em;'/> ";
         html += "<a href='http://bet.hkjc.com/football/odds/odds_allodds.aspx?tmatchid=" + DATA_HKJC[id_hkjc]["id"] + "' target='_blank'>" + DATA_HKJC[id_hkjc]["home"] + " vs. " + DATA_HKJC[id_hkjc]["away"] + "</a><span class='pull-right'>";
         html += "<span class='label label-" + (max_h == DATA_HKJC[id_hkjc]["odds"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["home"] + "</span> ";
         html += "<span class='label label-" + (max_d == DATA_HKJC[id_hkjc]["odds"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["draw"] + "</span> ";
         html += "<span class='label label-" + (max_a == DATA_HKJC[id_hkjc]["odds"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["away"] + "</span>";
-        html += "</span></p><hr/>";
+        html += "</span></p>";
     }
     if (id_macau[0] != -1) {
-        html += "<p>";
+        html += "<hr/><p>";
         html += "<img src='img/logo-macau.jpg' style='height:1em;'/> ";
         html += "<a href='http://web.macauslot.com/soccer/html/odds/list/ch-list_frame.html?2," + DATA_MACAU[id_macau[0]]["id"] + "' target='_blank'>" + DATA_MACAU[id_macau[0]]["home"] + " vs. " + DATA_MACAU[id_macau[0]]["away"] + "</a><span class='pull-right'>";
         html += "<span class='label label-info'>" + DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["team"] + " " + macau_market(parseInt(DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["mode"])) + "</span> ";
