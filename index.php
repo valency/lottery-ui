@@ -19,6 +19,9 @@
                     <th><img src="img/logo-500.png"/> H</th>
                     <th><img src="img/logo-500.png"/> D</th>
                     <th><img src="img/logo-500.png"/> A</th>
+                    <th><img src="img/logo-hkjc.gif"/> H</th>
+                    <th><img src="img/logo-hkjc.gif"/> D</th>
+                    <th><img src="img/logo-hkjc.gif"/> A</th>
                     <th><img src="img/logo-macau.jpg"/> Mode</th>
                     <th><img src="img/logo-macau.jpg"/> H</th>
                     <th><img src="img/logo-macau.jpg"/> A</th>
