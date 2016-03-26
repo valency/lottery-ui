@@ -115,9 +115,9 @@ function analyze() {
 }
 
 function detail(id_500, id_hkjc, id_macau) {
-    var max_h = Math.max(DATA_500[id_500]["odds"]["home"], DATA_HKJC[id_hkjc]["odds"]["home"], DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"]);
-    var max_d = Math.max(DATA_500[id_500]["odds"]["draw"], DATA_HKJC[id_hkjc]["odds"]["draw"]);
-    var max_a = Math.max(DATA_500[id_500]["odds"]["away"], DATA_HKJC[id_hkjc]["odds"]["away"], DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"]);
+    var max_h = Math.max(DATA_500[id_500]["odds"]["home"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["home"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"]));
+    var max_d = Math.max(DATA_500[id_500]["odds"]["draw"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["draw"]));
+    var max_a = Math.max(DATA_500[id_500]["odds"]["away"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["away"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"]));
     var html = "<h3>Details</h3><hr/><p>";
     html += "<img src='img/logo-500.png' style='height:1em;'/> ";
     html += "<a href='http://odds.500.com/fenxi/shuju-" + DATA_500[id_500]["id"] + ".shtml' target='_blank'>" + DATA_500[id_500]["home"] + " vs. " + DATA_500[id_500]["away"] + "</a><span class='pull-right'>";
