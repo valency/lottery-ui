@@ -7,8 +7,8 @@
 </head>
 <body>
 <?php include_once "header.php"; ?>
-<?php echo curl($PROTOCOL . $DOMAIN . "/lottery/breadcrumb.php?active=alias"); ?>
 <div class="container">
+    <?php echo curl($PROTOCOL . $DOMAIN . "/lottery/breadcrumb.php?active=alias"); ?>
     <div class="row">
         <div class="col-md-12">
             <table id="alias-list" class="table table-hover table-condensed">
