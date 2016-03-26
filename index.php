@@ -38,6 +38,7 @@
             <p>
                 <span class="text-danger">*</span> Return Rate:
                 <img src="img/logo-500.png" style="height:1em;"/> <span id="rr-500" class="label label-info">...</span>
+                <img src="img/logo-hkjc.gif" style="height:1em;"/> <span id="rr-hkjc" class="label label-info">...</span>
                 <img src="img/logo-macau.jpg" style="height:1em;"/> <span id="rr-macau" class="label label-info">...</span>
             </p>
         </div>

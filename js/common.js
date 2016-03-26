@@ -44,3 +44,24 @@ function get_url_parameter(p) {
 function string_overlap(a, b) {
     return a.indexOf(b) > -1 || b.indexOf(a) > -1;
 }
+
+function contains(array, needle) {
+    var findNaN = needle !== needle;
+    var indexOf;
+    if (!findNaN && typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function (needle) {
+            var i = -1, index = -1;
+            for (i = 0; i < array.length; i++) {
+                var item = array[i];
+                if ((findNaN && item !== item) || item === needle) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        };
+    }
+    return indexOf.call(array, needle) > -1;
+}
