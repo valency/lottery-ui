@@ -5274,7 +5274,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-brand > img {
-    display: block;
+    display: inline-block;
+    margin-right: 0.5em;
 }
 
 @media (min-width: 768px) {
@@ -8287,10 +8288,6 @@ button.close {
     -webkit-filter: none;
     filter: none;
     border: 1px solid #ac6819;
-}
-
-body {
-    font-weight: 200;
 }
 
 th {

@@ -1,3 +1,7 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -14,7 +18,8 @@ a, a:link, a:active, a:hover, a:visited, a:before, a:after {
     text-decoration: none;
 }
 
-th img {
+th img, a img {
+    display: inline-block;
     height: 1em;
 }
 
@@ -27,6 +32,5 @@ th img {
 }
 
 .navbar-brand {
-    font-family: "Old English Text MT", sans-serif;
-    font-size: 2em;
+    font-family: 'Roboto Condensed', sans-serif;
 }

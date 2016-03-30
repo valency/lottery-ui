@@ -8,11 +8,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href=".">Lottery Hedge Fund</a>
+            <a class="navbar-brand" href="."><img src="img/dice.png"/>Lottery Hedge Fund</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="alias.php" target="_blank">Alias</a></li>
+                <li><a href="alias.php" target="_blank">Alias Management</a></li>
             </ul>
         </div>
     </div>

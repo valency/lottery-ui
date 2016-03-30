@@ -21,18 +21,36 @@ $(document).ready(function () {
             DATA_500 = resp;
             STATE_500 = true;
             analyze();
+        }).fail(function () {
+            bootbox.hideAll();
+            bootbox.dialog({
+                message: error_message("Failed to load the markets of 500.com. Please refresh and try again."),
+                closeButton: false
+            });
         });
         STATE_HKJC = false;
         $.get("/api/lottery/crawl/list/hkjc", function (resp) {
             DATA_HKJC = resp;
             STATE_HKJC = true;
             analyze();
+        }).fail(function () {
+            bootbox.hideAll();
+            bootbox.dialog({
+                message: error_message("Failed to load the markets of HKJC. Please refresh and try again."),
+                closeButton: false
+            });
         });
         STATE_MACAU = false;
         $.get("/api/lottery/crawl/list/macau", function (resp) {
             DATA_MACAU = resp;
             STATE_MACAU = true;
             analyze();
+        }).fail(function () {
+            bootbox.hideAll();
+            bootbox.dialog({
+                message: error_message("Failed to load the markets of Macau Slot. Please refresh and try again."),
+                closeButton: false
+            });
         });
     });
     $("#rr-500").html(RR["500"]);
@@ -115,6 +133,18 @@ function analyze() {
 }
 
 function detail(id_500, id_hkjc, id_macau) {
+    DATA_500[id_500]["odds"]["home"] = (DATA_500[id_500]["odds"]["home"] / RR["500"]).toFixed(4);
+    DATA_500[id_500]["odds"]["draw"] = (DATA_500[id_500]["odds"]["draw"] / RR["500"]).toFixed(4);
+    DATA_500[id_500]["odds"]["away"] = (DATA_500[id_500]["odds"]["away"] / RR["500"]).toFixed(4);
+    if (id_hkjc != -1) {
+        DATA_HKJC[id_hkjc]["odds"]["home"] = ( DATA_HKJC[id_hkjc]["odds"]["home"] / RR["hkjc"]).toFixed(4);
+        DATA_HKJC[id_hkjc]["odds"]["draw"] = ( DATA_HKJC[id_hkjc]["odds"]["draw"] / RR["hkjc"]).toFixed(4);
+        DATA_HKJC[id_hkjc]["odds"]["away"] = ( DATA_HKJC[id_hkjc]["odds"]["away"] / RR["hkjc"]).toFixed(4);
+    }
+    if (id_macau[0] != -1) {
+        DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] = (DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] / RR["macau"]).toFixed(4);
+        DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] = (DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] / RR["macau"]).toFixed(4);
+    }
     var max_h = Math.max(DATA_500[id_500]["odds"]["home"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["home"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"]));
     var max_d = Math.max(DATA_500[id_500]["odds"]["draw"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["draw"]));
     var max_a = Math.max(DATA_500[id_500]["odds"]["away"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["away"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"]));
