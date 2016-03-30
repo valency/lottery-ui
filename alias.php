@@ -14,13 +14,21 @@
             <table id="alias-list" class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th>Match Time</th>
-                    <th><img src="img/logo-500.png"/> Home</th>
-                    <th><img src="img/logo-macau.jpg"/> Home</th>
-                    <th><img src="img/logo-500.png"/> Away</th>
-                    <th><img src="img/logo-macau.jpg"/> Away</th>
-                    <th>Operations</th>
+                    <th rowspan="2">*</th>
+                    <th rowspan="2" class="text-center">Match Time</th>
+                    <th colspan="4" class="text-center">Home</th>
+                    <th colspan="4" class="text-center">Away</th>
+                    <th rowspan="2" class="text-center">Operations</th>
+                </tr>
+                <tr>
+                    <th class="text-center"><img src="img/flags/China.png"/></th>
+                    <th class="text-center"><img src="img/flags/Taiwan.png"/></th>
+                    <th class="text-center"><img src="img/flags/United-States-of-America.png"/></th>
+                    <th class="text-center"><img src="img/flags/United-Kingdom.png"/></th>
+                    <th class="text-center"><img src="img/flags/China.png"/></th>
+                    <th class="text-center"><img src="img/flags/Taiwan.png"/></th>
+                    <th class="text-center"><img src="img/flags/United-States-of-America.png"/></th>
+                    <th class="text-center"><img src="img/flags/United-Kingdom.png"/></th>
                 </tr>
                 </thead>
                 <tbody></tbody>
