@@ -1,1 +1,1 @@
-Please refer to https://github.com/valency/lottery-api.git for more details.
+Please refer to https://github.com/valency/lottery-api for more details.
