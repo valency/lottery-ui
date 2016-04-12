@@ -3,8 +3,8 @@
 
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-<link href='http://fonts.useso.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-<link href='http://fonts.useso.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+<!--<link href='http://fonts.useso.com/css?family=Roboto' rel='stylesheet' type='text/css'>-->
+<!--<link href='http://fonts.useso.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>-->
 
 <link rel="stylesheet" type="text/css" href="lib/bootstrap-3.3.6/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="lib/font-awesome-4.5.0/css/font-awesome.min.css"/>
