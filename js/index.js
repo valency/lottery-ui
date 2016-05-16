@@ -1,71 +1,15 @@
-var STATE_500 = false;
-var DATA_500 = [];
-var STATE_HKJC = false;
-var DATA_HKJC = [];
-var STATE_MACAU = false;
-var DATA_MACAU = [];
-var RR = {
-    500: 0.91,
-    hkjc: 1.00,
-    macau: 0.98
-};
-
 $(document).ready(function () {
     bootbox.dialog({
-        message: loading_message("Loading..."),
+        message: loading_message("Loading... <span class='label label-default pull-right' id='loading-5c'>5C</span> <span class='label label-default pull-right' id='loading-hk-ch'>HK-CH</span> <span class='label label-default pull-right' id='loading-hk-en'>HK-EN</span> <span class='label label-default pull-right' id='loading-bf'>BF</span>"),
         closeButton: false
     });
     load_alias(function () {
-        STATE_500 = false;
-        $.get("/api/lottery/crawl/list/500", function (resp) {
-            DATA_500 = resp;
-            STATE_500 = true;
-            analyze();
-        }).fail(function () {
-            bootbox.hideAll();
-            bootbox.dialog({
-                message: error_message("Failed to load the markets of 500.com. Please refresh and try again."),
-                closeButton: false
-            });
-        });
-        STATE_HKJC = false;
-        $.get("/api/lottery/crawl/list/hkjc", function (resp) {
-            DATA_HKJC = resp;
-            STATE_HKJC = true;
-            analyze();
-        }).fail(function () {
-            bootbox.hideAll();
-            bootbox.dialog({
-                message: error_message("Failed to load the markets of HKJC. Please refresh and try again."),
-                closeButton: false
-            });
-        });
-        STATE_MACAU = false;
-        $.get("/api/lottery/crawl/list/macau", function (resp) {
-            DATA_MACAU = resp;
-            STATE_MACAU = true;
-            analyze();
-        }).fail(function () {
-            bootbox.hideAll();
-            bootbox.dialog({
-                message: error_message("Failed to load the markets of Macau Slot. Please refresh and try again."),
-                closeButton: false
-            });
-        });
+        load_markets(analyze);
     });
-    $("#rr-500").html(RR["500"]);
-    $("#rr-hkjc").html(RR["hkjc"]);
-    $("#rr-macau").html(RR["macau"]);
+    $("#rr-5c").html(RR["5C"]);
+    $("#rr-hk").html(RR["HK-CH"]);
+    $("#rr-bf").html(RR["BF"]);
 });
-
-function macau_market(mode) {
-    var base = Math.floor(mode / 2) * 0.5;
-    if (mode % 2 == 0) {
-        return (base - 0.5).toString() + "/" + base.toString();
-    } else {
-        return base;
-    }
-}
 
 function strategy(odd, rr) {
     var max_h = -1;
@@ -81,48 +25,53 @@ function strategy(odd, rr) {
 }
 
 function analyze() {
-    if (STATE_500 && STATE_HKJC && STATE_MACAU) {
-        for (var i = 0; i < DATA_500.length; i++) {
-            var odds = [DATA_500[i]["odds"], -1, -1];
-            var ids = [i, -1, [-1, -1]];
-            var html = "<td>" + DATA_500[i]["t"] + "</td>";
-            html += "<td>" + DATA_500[i]["home"] + "</td>";
-            html += "<td>" + DATA_500[i]["away"] + "</td>";
-            html += "<td>" + DATA_500[i]["odds"]["home"] + "</td>";
-            html += "<td>" + DATA_500[i]["odds"]["draw"] + "</td>";
-            html += "<td>" + DATA_500[i]["odds"]["away"] + "</td>";
-            for (var j = 0; j < DATA_HKJC.length; j++) {
-                if (DATA_500[i]["t"] == DATA_HKJC[j]["t"] && check_alias(DATA_500[i]["home"], DATA_HKJC[j]["home"]) && check_alias(DATA_500[i]["away"], DATA_HKJC[j]["away"])) {
+    if (MARKETS["5C"] != null && MARKETS["HK-EN"] != null && MARKETS["HK-CH"] != null && MARKETS["BF"] != null) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            message: loading_message("Analyzing markets..."),
+            closeButton: false
+        });
+        for (var i = 0; i < MARKETS["5C"]["markets"].length; i++) {
+            var markets = {
+                "5C": MARKETS["5C"]["markets"][i],
+                "HK": null,
+                "BF": null
+            };
+            var odds = [markets["5C"]["odd"], -1, -1];
+            var ids = [i, -1, -1];
+            var html = "<td>" + markets["5C"]["t"] + "</td>";
+            html += "<td>" + markets["5C"]["home"] + "</td>";
+            html += "<td>" + markets["5C"]["away"] + "</td>";
+            html += "<td>" + odds[0]["home"] + "</td>";
+            html += "<td>" + odds[0]["draw"] + "</td>";
+            html += "<td>" + odds[0]["away"] + "</td>";
+            for (var j = 0; j < MARKETS["HK-CH"]["markets"].length; j++) {
+                if (markets["5C"]["t"] == MARKETS["HK-CH"]["markets"][j]["t"] && check_alias([markets["5C"]["home"], MARKETS["HK-CH"]["markets"][j]["home"]]) && check_alias([markets["5C"]["away"], MARKETS["HK-CH"]["markets"][j]["away"]])) {
+                    markets["HK"] = MARKETS["HK-CH"]["markets"][j];
                     ids[1] = j;
-                    odds[1] = DATA_HKJC[j]["odds"];
-                    html += "<td>" + DATA_HKJC[j]["odds"]["home"] + "</td>";
-                    html += "<td>" + DATA_HKJC[j]["odds"]["draw"] + "</td>";
-                    html += "<td>" + DATA_HKJC[j]["odds"]["away"] + "</td>";
+                    odds[1] = markets["HK"]["odd"];
+                    html += "<td>" + odds[1]["home"] + "</td>";
+                    html += "<td>" + odds[1]["draw"] + "</td>";
+                    html += "<td>" + odds[1]["away"] + "</td>";
                     break;
                 }
             }
             if (odds[1] == -1) html += "<td>-</td><td>-</td><td>-</td>";
-            for (j = 0; j < DATA_MACAU.length; j++) {
-                if (DATA_MACAU[j]["odds"] && DATA_500[i]["t"] == DATA_MACAU[j]["t"] && check_alias(DATA_500[i]["home"], DATA_MACAU[j]["home"]) && check_alias(DATA_500[i]["away"], DATA_MACAU[j]["away"])) {
-                    for (var k = 0; k < DATA_MACAU[j]["odds"].length; k++) {
-                        var mode = parseInt(DATA_MACAU[j]["odds"][k]["mode"]);
-                        if (mode == 3) {
-                            ids[2] = [j, k];
-                            odds[2] = DATA_MACAU[j]["odds"][k];
-                            html += "<td>" + DATA_MACAU[j]["odds"][k]["team"] + " " + macau_market(mode) + "</td>";
-                            html += "<td>" + DATA_MACAU[j]["odds"][k]["home"] + "</td>";
-                            html += "<td>" + DATA_MACAU[j]["odds"][k]["away"] + "</td>";
-                            break;
-                        }
-                    }
+            for (j = 0; j < MARKETS["BF"]["markets"].length; j++) {
+                if (markets["5C"]["t"] == MARKETS["BF"]["markets"][j]["t"] && check_alias([markets["5C"]["home"], MARKETS["BF"]["markets"][j]["home"]]) && check_alias([markets["5C"]["away"], MARKETS["BF"]["markets"][j]["away"]])) {
+                    markets["BF"] = MARKETS["BF"]["markets"][j];
+                    ids[2] = j;
+                    odds[2] = markets["BF"]["odd"];
+                    html += "<td>" + odds[2]["home"] + "</td>";
+                    html += "<td>" + odds[2]["draw"] + "</td>";
+                    html += "<td>" + odds[2]["away"] + "</td>";
                     break;
                 }
             }
             if (odds[2] == -1) html += "<td>-</td><td>-</td><td>-</td>";
-            var score = strategy(odds, [RR["500"], RR["hkjc"], RR["macau"]]);
+            var score = strategy(odds, [RR["5C"], RR["HK-CH"], RR["BF"]]);
             html += "<td><span class='label label-" + (score < 1 ? "primary" : "default") + "'>" + score + "</span></td>";
-            html += "</tr>";
-            html = "<tr onclick='detail(" + ids[0] + "," + ids[1] + ",[" + ids[2][0] + "," + ids[2][1] + "]);'>" + html;
+            html = "<tr onclick='detail(" + ids[0] + "," + ids[1] + "," + ids[2] + ");'>" + html + "</tr>";
             $("#match-list tbody").append(html);
         }
         $("#match-list").DataTable({
@@ -132,45 +81,64 @@ function analyze() {
     }
 }
 
-function detail(id_500, id_hkjc, id_macau) {
-    DATA_500[id_500]["odds"]["home"] = (DATA_500[id_500]["odds"]["home"] / RR["500"]).toFixed(4);
-    DATA_500[id_500]["odds"]["draw"] = (DATA_500[id_500]["odds"]["draw"] / RR["500"]).toFixed(4);
-    DATA_500[id_500]["odds"]["away"] = (DATA_500[id_500]["odds"]["away"] / RR["500"]).toFixed(4);
-    if (id_hkjc != -1) {
-        DATA_HKJC[id_hkjc]["odds"]["home"] = ( DATA_HKJC[id_hkjc]["odds"]["home"] / RR["hkjc"]).toFixed(4);
-        DATA_HKJC[id_hkjc]["odds"]["draw"] = ( DATA_HKJC[id_hkjc]["odds"]["draw"] / RR["hkjc"]).toFixed(4);
-        DATA_HKJC[id_hkjc]["odds"]["away"] = ( DATA_HKJC[id_hkjc]["odds"]["away"] / RR["hkjc"]).toFixed(4);
+function detail(id_5c, id_hk, id_bf) {
+    var odds = {
+        "5C": {
+            "home": (MARKETS["5C"]["markets"][id_5c]["odd"]["home"] / RR["5C"]).toFixed(4),
+            "draw": (MARKETS["5C"]["markets"][id_5c]["odd"]["draw"] / RR["5C"]).toFixed(4),
+            "away": (MARKETS["5C"]["markets"][id_5c]["odd"]["away"] / RR["5C"]).toFixed(4)
+        },
+        "HK": {
+            "home": 0,
+            "draw": 0,
+            "away": 0
+        },
+        "BF": {
+            "home": 0,
+            "draw": 0,
+            "away": 0
+        }
+    };
+    if (id_hk >= 0) {
+        odds["HK"] = {
+            "home": (MARKETS["HK-CH"]["markets"][id_hk]["odd"]["home"] / RR["HK-CH"]).toFixed(4),
+            "draw": (MARKETS["HK-CH"]["markets"][id_hk]["odd"]["draw"] / RR["HK-CH"]).toFixed(4),
+            "away": (MARKETS["HK-CH"]["markets"][id_hk]["odd"]["away"] / RR["HK-CH"]).toFixed(4)
+        };
     }
-    if (id_macau[0] != -1) {
-        DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] = (DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] / RR["macau"]).toFixed(4);
-        DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] = (DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] / RR["macau"]).toFixed(4);
+    if (id_bf >= 0) {
+        odds["BF"] = {
+            "home": (MARKETS["BF"]["markets"][id_bf]["odd"]["home"] / RR["BF"]).toFixed(4),
+            "draw": (MARKETS["BF"]["markets"][id_bf]["odd"]["draw"] / RR["BF"]).toFixed(4),
+            "away": (MARKETS["BF"]["markets"][id_bf]["odd"]["away"] / RR["BF"]).toFixed(4)
+        };
     }
-    var max_h = Math.max(DATA_500[id_500]["odds"]["home"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["home"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"]));
-    var max_d = Math.max(DATA_500[id_500]["odds"]["draw"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["draw"]));
-    var max_a = Math.max(DATA_500[id_500]["odds"]["away"], (id_hkjc == -1 ? -1 : DATA_HKJC[id_hkjc]["odds"]["away"]), (id_macau[0] == -1 ? -1 : DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"]));
+    var max_h = Math.max(odds["5C"]["home"], odds["HK"]["home"], odds["BF"]["home"]);
+    var max_d = Math.max(odds["5C"]["draw"], odds["HK"]["draw"], odds["BF"]["draw"]);
+    var max_a = Math.max(odds["5C"]["away"], odds["HK"]["away"], odds["BF"]["away"]);
     var html = "<h3>Details</h3><hr/><p>";
     html += "<img src='img/logo-500.png' style='height:1em;'/> ";
-    html += "<a href='http://odds.500.com/fenxi/shuju-" + DATA_500[id_500]["id"] + ".shtml' target='_blank'>" + DATA_500[id_500]["home"] + " vs. " + DATA_500[id_500]["away"] + "</a><span class='pull-right'>";
-    html += "<span class='label label-" + (max_h == DATA_500[id_500]["odds"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["home"] + "</span> ";
-    html += "<span class='label label-" + (max_d == DATA_500[id_500]["odds"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["draw"] + "</span> ";
-    html += "<span class='label label-" + (max_a == DATA_500[id_500]["odds"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + DATA_500[id_500]["odds"]["away"] + "</span>";
+    html += "<a href='http://odds.500.com/fenxi/shuju-" + MARKETS["5C"]["markets"][id_5c]["market"] + ".shtml' target='_blank'>" + MARKETS["5C"]["markets"][id_5c]["home"] + " vs. " + MARKETS["5C"]["markets"][id_5c]["away"] + "</a><span class='pull-right'>";
+    html += "<span class='label label-" + (max_h == odds["5C"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + odds["5C"]["home"] + "</span> ";
+    html += "<span class='label label-" + (max_d == odds["5C"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + odds["5C"]["draw"] + "</span> ";
+    html += "<span class='label label-" + (max_a == odds["5C"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + odds["5C"]["away"] + "</span>";
     html += "</span></p>";
-    if (id_hkjc != -1) {
+    if (id_hk >= 0) {
         html += "<hr/><p>";
         html += "<img src='img/logo-hkjc.gif' style='height:1em;'/> ";
-        html += "<a href='http://bet.hkjc.com/football/odds/odds_allodds.aspx?tmatchid=" + DATA_HKJC[id_hkjc]["id"] + "' target='_blank'>" + DATA_HKJC[id_hkjc]["home"] + " vs. " + DATA_HKJC[id_hkjc]["away"] + "</a><span class='pull-right'>";
-        html += "<span class='label label-" + (max_h == DATA_HKJC[id_hkjc]["odds"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["home"] + "</span> ";
-        html += "<span class='label label-" + (max_d == DATA_HKJC[id_hkjc]["odds"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["draw"] + "</span> ";
-        html += "<span class='label label-" + (max_a == DATA_HKJC[id_hkjc]["odds"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + DATA_HKJC[id_hkjc]["odds"]["away"] + "</span>";
+        html += "<a href='http://bet.hkjc.com/football/odds/odds_allodds.aspx?tmatchid=" + MARKETS["HK-CH"]["markets"][id_hk]["market"] + "' target='_blank'>" + MARKETS["HK-CH"]["markets"][id_hk]["home"] + " vs. " + MARKETS["HK-CH"]["markets"][id_hk]["away"] + "</a><span class='pull-right'>";
+        html += "<span class='label label-" + (max_h == odds["HK"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + odds["HK"]["home"] + "</span> ";
+        html += "<span class='label label-" + (max_d == odds["HK"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + odds["HK"]["draw"] + "</span> ";
+        html += "<span class='label label-" + (max_a == odds["HK"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + odds["HK"]["away"] + "</span>";
         html += "</span></p>";
     }
-    if (id_macau[0] != -1) {
+    if (id_bf >= 0) {
         html += "<hr/><p>";
-        html += "<img src='img/logo-macau.jpg' style='height:1em;'/> ";
-        html += "<a href='http://web.macauslot.com/soccer/html/odds/list/ch-list_frame.html?2," + DATA_MACAU[id_macau[0]]["id"] + "' target='_blank'>" + DATA_MACAU[id_macau[0]]["home"] + " vs. " + DATA_MACAU[id_macau[0]]["away"] + "</a><span class='pull-right'>";
-        html += "<span class='label label-info'>" + DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["team"] + " " + macau_market(parseInt(DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["mode"])) + "</span> ";
-        html += "<span class='label label-" + (max_h == DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["home"] + "</span> ";
-        html += "<span class='label label-" + (max_a == DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + DATA_MACAU[id_macau[0]]["odds"][id_macau[1]]["away"] + "</span>";
+        html += "<img src='img/logo-betfair.png' style='height:1em;'/> ";
+        html += "<a href='https://www.betfair.com/exchange/football/event?id=" + MARKETS["BF"]["markets"][id_bf]["market"] + "' target='_blank'>" + MARKETS["BF"]["markets"][id_bf]["home"] + " vs. " + MARKETS["BF"]["markets"][id_bf]["away"] + "</a><span class='pull-right'>";
+        html += "<span class='label label-" + (max_h == odds["BF"]["home"] ? "primary" : "default") + "'>H</span><span class='label label-fade'>" + odds["BF"]["home"] + "</span> ";
+        html += "<span class='label label-" + (max_d == odds["BF"]["draw"] ? "primary" : "default") + "'>D</span><span class='label label-fade'>" + odds["BF"]["draw"] + "</span> ";
+        html += "<span class='label label-" + (max_a == odds["BF"]["away"] ? "primary" : "default") + "'>A</span><span class='label label-fade'>" + odds["BF"]["away"] + "</span>";
         html += "</span></p>";
     }
     bootbox.alert(html);

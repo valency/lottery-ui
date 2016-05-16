@@ -34,3 +34,7 @@ th img, a img {
 .navbar-brand {
     font-family: 'Roboto Condensed', sans-serif;
 }
+
+.container {
+    width: 100%;
+}

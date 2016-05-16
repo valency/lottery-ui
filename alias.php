@@ -21,14 +21,14 @@
                     <th rowspan="2" class="text-center">Operations</th>
                 </tr>
                 <tr>
-                    <th class="text-center"><img src="img/flags/China.png"/></th>
-                    <th class="text-center"><img src="img/flags/Taiwan.png"/></th>
-                    <th class="text-center"><img src="img/flags/United-States-of-America.png"/></th>
-                    <th class="text-center"><img src="img/flags/United-Kingdom.png"/></th>
-                    <th class="text-center"><img src="img/flags/China.png"/></th>
-                    <th class="text-center"><img src="img/flags/Taiwan.png"/></th>
-                    <th class="text-center"><img src="img/flags/United-States-of-America.png"/></th>
-                    <th class="text-center"><img src="img/flags/United-Kingdom.png"/></th>
+                    <th class="text-center"><img src="img/logo-500.png"/></th>
+                    <th class="text-center"><img src="img/logo-hkjc.gif"/> <img src="img/flags/Taiwan.png"/></th>
+                    <th class="text-center"><img src="img/logo-hkjc.gif"/> <img src="img/flags/United-Kingdom.png"/></th>
+                    <th class="text-center"><img src="img/logo-macau.jpg"/></th>
+                    <th class="text-center"><img src="img/logo-500.png"/></th>
+                    <th class="text-center"><img src="img/logo-hkjc.gif"/> <img src="img/flags/Taiwan.png"/></th>
+                    <th class="text-center"><img src="img/logo-hkjc.gif"/> <img src="img/flags/United-Kingdom.png"/></th>
+                    <th class="text-center"><img src="img/logo-macau.jpg"/></th>
                 </tr>
                 </thead>
                 <tbody></tbody>

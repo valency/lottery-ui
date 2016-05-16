@@ -22,9 +22,9 @@
                     <th><img src="img/logo-hkjc.gif"/> H</th>
                     <th><img src="img/logo-hkjc.gif"/> D</th>
                     <th><img src="img/logo-hkjc.gif"/> A</th>
-                    <th><img src="img/logo-macau.jpg"/> Mode</th>
-                    <th><img src="img/logo-macau.jpg"/> H</th>
-                    <th><img src="img/logo-macau.jpg"/> A</th>
+                    <th><img src="img/logo-betfair.png"/> H</th>
+                    <th><img src="img/logo-betfair.png"/> D</th>
+                    <th><img src="img/logo-betfair.png"/> A</th>
                     <th>Strategy</th>
                 </tr>
                 </thead>
@@ -37,9 +37,9 @@
         <div class="col-md-12">
             <p>
                 <span class="text-danger">*</span> Return Rate:
-                <img src="img/logo-500.png" style="height:1em;"/> <span id="rr-500" class="label label-info">...</span>
-                <img src="img/logo-hkjc.gif" style="height:1em;"/> <span id="rr-hkjc" class="label label-info">...</span>
-                <img src="img/logo-macau.jpg" style="height:1em;"/> <span id="rr-macau" class="label label-info">...</span>
+                <img src="img/logo-500.png" style="height:1em;"/> <span id="rr-5c" class="label label-info">...</span>
+                <img src="img/logo-hkjc.gif" style="height:1em;"/> <span id="rr-hk" class="label label-info">...</span>
+                <img src="img/logo-betfair.png" style="height:1em;"/> <span id="rr-bf" class="label label-info">...</span>
             </p>
         </div>
     </div>
