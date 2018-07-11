@@ -14,7 +14,7 @@ var MARKETS = {
     // "MS": null
 };
 var RR = {
-    "5C": 0.907,
+    "5C": 0.9,
     "HK-CH": 1,
     "HK-EN": 1,
     "BF": 1
